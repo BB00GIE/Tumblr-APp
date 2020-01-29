@@ -16,6 +16,9 @@ class PhotosViewController: UIViewController, UITableViewDelegate,UITableViewDat
 
     @IBOutlet weak var tableView: UITableView!
     override func viewDidLoad() {
+        
+        tableView.delegate = self
+        tableView.dataSource = self
         super.viewDidLoad()
         
         // Network request snippet
@@ -36,6 +39,7 @@ class PhotosViewController: UIViewController, UITableViewDelegate,UITableViewDat
             self.posts = responseDictionary["posts"] as! [[String: Any]]
 
               // TODO: Reload the table view
+            self.tableView.reloadData()
           }
         }
         task.resume()
@@ -61,9 +65,10 @@ class PhotosViewController: UIViewController, UITableViewDelegate,UITableViewDat
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: "YourCustomCell") as! PhotoCell
+        let cell = tableView.dequeueReusableCell(withIdentifier: "PhotoCell", for: indexPath) as! PhotoCell
         
         let post = posts[indexPath.row]
+        
         if let photos = post["photos"] as? [[String: Any]] {
              // photos is NOT nil, we can use it!
              // TODO: Get the photo url
@@ -76,7 +81,7 @@ class PhotosViewController: UIViewController, UITableViewDelegate,UITableViewDat
             // 4.
             let url = URL(string: urlString)
             cell.postImage.af_setImage(withURL: url!)
-            self.tableView.reloadData()
+            
         }
         
         return cell
