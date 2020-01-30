@@ -86,5 +86,17 @@ class PhotosViewController: UIViewController, UITableViewDelegate,UITableViewDat
         
         return cell
     }
+    
+    
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        let vc = segue.destination as! PhotoDetailsViewController
+        
+        let cell = sender as! UITableViewCell
+        
+        let indexPath = tableView.indexPath(for: cell)
+        
+        vc.post = posts[indexPath!.row]
+        
+    }
 
 }
